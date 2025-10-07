@@ -1,0 +1,30 @@
+# Віртуальне середовище
+venv/
+env/
+ENV/
+
+# Бази даних
+*.sqlite3
+*.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+
+# Django
+*.log
+local_settings.py
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment variables
+.env
+*.env
