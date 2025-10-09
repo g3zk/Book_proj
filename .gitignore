@@ -1,0 +1,17 @@
+/books/__pycache__/
+bookstore/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+env/
+*.sqlite3
+media/
+staticfiles/
+*.log
+.idea/
+.vscode/
+*.iml
+books/migrations/.DS_Store
+.env
+
