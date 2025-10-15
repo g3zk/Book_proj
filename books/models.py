@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Author(models.Model):
@@ -24,6 +25,7 @@ class Book(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='Author_books')
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE, related_name='Publisher_books')
     created_at = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='books', null=True, blank=True)
 
     def __str__(self):
         return self.title

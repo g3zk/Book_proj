@@ -3,10 +3,10 @@ from .models import Book, Author, Publisher
 
 
 class BookSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = Book
-        fields = ['id', 'title', 'description', 'price', 'author', 'publisher',
-                  'created_at']
+        fields = ['id', 'title', 'description', 'price', 'author', 'publisher', 'owner', 'created_at']
 
 
 class AuthorSerializer(serializers.ModelSerializer):
