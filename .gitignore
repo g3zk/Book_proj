@@ -4,11 +4,6 @@ __pycache__/
 *.pyd
 *.env
 *.venv
-*.egg
-*.egg-info/
-dist/
-build/
-pip-wheel-metadata/
 *.log
 *.sqlite3
 db.sqlite3
@@ -18,8 +13,6 @@ db.sqlite3
 *.idea/
 *.vscode/
 *.DS_Store
-/staticfiles/
-media/
 .env
 .env.local
 .env.*.local
