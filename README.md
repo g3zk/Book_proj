@@ -1,76 +1,160 @@
-# Online Bookstore 📚
-
-## Description
-
-The Online Bookstore is a web application where users can browse the book catalog, filter by genres, authors, or publishers, read descriptions, add books to the cart, and place orders. Users can also register, create their own profile, and view their order history. Administrators can add new books, edit information, and manage orders.
+# Bookstore
 
 ---
 
-### 🔑 Authentication
+### Authentication
 
-#### `POST /auth/register`
+#### `POST /register`
 
-* **Usage**: Register a new user
+* **Usage**: Registration a new user
 * **Method**: POST
+* **Request body**:
+    ```json
+    {
+    "username": "user",
+    "first_name": "example",
+    "last_name": "example",
+    "email": "user@gmail.com",
+    "password": "password",
+    "password_check": "password"
+    }
+    ```
 * **Response status**: `201 Created`
+* **Response body**:
+    ```json
+    {
+    "username": "user",
+    "first_name": "example",
+    "last_name": "example",
+    "email": "user@gmail.com"
+    }
+    ```
 
-#### `POST /auth/login`
+#### `POST /token`
 
-* **Usage**: Log in (receive JWT token)
+* **Usage**: Log in
 * **Method**: POST
+* **Request body**:
+    ```json
+    {
+    "username": "user",
+    "password": "password"
+    }
+    ```
 * **Response status**: `200 OK`
+    ```json
+    {
+    "refresh": "example_refresh",
+    "access": "example_access"
+    }
+    ```
+  
+#### `POST /token/refresh`
 
-#### `GET /auth/me`
-
-* **Usage**: Get current user information
-* **Method**: GET
+* **Usage**: New refresh token
+* **Method**: POST
+* **Request body**:
+    ```json
+    {
+    "refresh": "example_refresh"
+    }
+    ```
 * **Response status**: `200 OK`
+    ```json
+    {
+    "refresh": "new_example_refresh",
+    }
+    ```
 
 ---
 
-### 👤 Users
-
-#### `GET /users/{id}`
-
-* **Usage**: Get public information about a user
-* **Method**: GET
-* **Response status**: `200 OK`
-
-#### `PUT /users/me`
-
-* **Usage**: Update profile information
-* **Method**: PUT
-* **Response status**: `200 OK`
-
----
-
-### 📚 Books
+### Books
 
 #### `GET /books`
 
-* **Usage**: Get a list of books with search and filter options
+* **Usage**: Get a list of books
 * **Method**: GET
 * **Response status**: `200 OK`
+* **Response body**: `List of books`
 
-#### `POST /books` (admin)
+#### `POST /books` (owner)
 
 * **Usage**: Add a new book
 * **Method**: POST
+* **Request body**:
+    ```json
+    {
+    "title": "Example book title",
+    "description": "A description of book.",
+    "price": "200.00",
+    "author": 1,
+    "publisher": 1
+    }
+    ```
 * **Response status**: `201 Created`
+* **Response body**:
+    ```json
+    {
+    "id": 1,
+    "title": "Example book title",
+    "description": "A description of book.",
+    "price": "200.00",
+    "author": 1,
+    "publisher": 1,
+    "owner": "current_username",
+    "created_at": "Created time"
+    }
+    ```
 
 #### `GET /books/{id}`
 
 * **Usage**: Get detailed information about a book
 * **Method**: GET
 * **Response status**: `200 OK`
+* * **Response body**:
+    ```json
+    {
+    "id": 1,
+    "title": "Example book title",
+    "description": "A description of book.",
+    "price": "200.00",
+    "author": 1,
+    "publisher": 1,
+    "owner": "current_username",
+    "created_at": "Created time"
+    }
+    ```
 
-#### `PUT /books/{id}` (admin)
+#### `PUT /books/{id}` (owner)
 
 * **Usage**: Update book information
 * **Method**: PUT
+* **Request body**:
+    ```json
+    {
+    "title": "Update example book title",
+    "description": "A description of book.",
+    "price": "150.00",
+    "author": 1,
+    "publisher": 1
+    }
+    ```
 * **Response status**: `200 OK`
+* **Response body**:
+    ```json
+    {
+    "id": 1,
+    "title": "Update example book title",
+    "description": "A description of book.",
+    "price": "150.00",
+    "author": 1,
+    "publisher": 1,
+    "owner": "current_username",
+    "created_at": "Created time"
+    }
+    ```
 
-#### `DELETE /books/{id}` (admin)
+#### `DELETE /books/{id}` (owner)
 
 * **Usage**: Delete a book
 * **Method**: DELETE
@@ -78,114 +162,157 @@ The Online Bookstore is a web application where users can browse the book catalo
 
 ---
 
-### ✍️ Authors
+### Authors
 
 #### `GET /authors`
 
 * **Usage**: Get a list of authors
 * **Method**: GET
 * **Response status**: `200 OK`
+* **Response body**: `List of authors`
 
-#### `POST /authors` (admin)
+#### `POST /authors` 
 
 * **Usage**: Add a new author
 * **Method**: POST
 * **Response status**: `201 Created`
+* **Request body**:
+    ```json
+    {
+    "name": "Example author name",
+    "biography": "Example biography author"
+    }
+    ```
+* **Response status**: `201 Created`
+* **Response body**:
+    ```json
+    {
+    "id": 1,
+    "name": "Example author name",
+    "biography": "Example biography author",
+    "created_at": "Created time"
+    }
+    ```
 
 #### `GET /authors/{id}`
 
-* **Usage**: Get information about an author and their books
+* **Usage**: Get information about an author
 * **Method**: GET
 * **Response status**: `200 OK`
+* **Response body**:
+    ```json
+    {
+    "id": 1,
+    "name": "Example author name",
+    "biography": "Example biography author",
+    "created_at": "Created time"
+    }
+    ```
+#### `PUT /authors/{id}`
 
----
-
-### 🏢 Publishers
-
-#### `GET /publishers`
-
-* **Usage**: Get a list of publishers
-* **Method**: GET
+* **Usage**: Update author information
+* **Method**: PUT
+* **Request body**:
+    ```json
+    {
+    "name": "Update example author name",
+    "biography": "Update example biography author"
+    }
+    ```
 * **Response status**: `200 OK`
+* **Response body**:
+    ```json
+    {
+    "id": 1,
+    "name": "Update example author name",
+    "biography": "Update example biography author",
+    "created_at": "Created time"
+    }
+    ```
 
-#### `GET /publishers/{id}`
+#### `DELETE /authors/{id}`
 
-* **Usage**: Get information about a publisher and their books
-* **Method**: GET
-* **Response status**: `200 OK`
-
----
-
-### 🎭 Genres
-
-#### `GET /genres`
-
-* **Usage**: Get a list of genres
-* **Method**: GET
-* **Response status**: `200 OK`
-
-#### `GET /genres/{id}`
-
-* **Usage**: Get books of a specific genre
-* **Method**: GET
-* **Response status**: `200 OK`
-
----
-
-### 🛒 Cart
-
-#### `GET /cart`
-
-* **Usage**: View the user's cart
-* **Method**: GET
-* **Response status**: `200 OK`
-
-#### `POST /cart/items`
-
-* **Usage**: Add or update a book in the cart
-* **Method**: POST
-* **Response status**: `200 OK`
-
-#### `DELETE /cart/items/{book_id}`
-
-* **Usage**: Remove a book from the cart
+* **Usage**: Delete a author
 * **Method**: DELETE
 * **Response status**: `204 No Content`
 
 ---
 
-### 📦 Orders
+### Publishers
 
-#### `POST /orders/checkout`
+#### `GET /publishers`
 
-* **Usage**: Create an order from the cart
+* **Usage**: Get a list of authors
+* **Method**: GET
+* **Response status**: `200 OK`
+* **Response body**: `List of publishers`
+
+#### `POST /publishers` 
+
+* **Usage**: Add a new publisher
 * **Method**: POST
 * **Response status**: `201 Created`
+* **Request body**:
+    ```json
+    {
+    "name": "Example publisher name",
+    "address": "Example address publisher"
+    }
+    ```
+* **Response status**: `201 Created`
+* **Response body**:
+    ```json
+    {
+    "id": 1,
+    "name": "Example publisher name",
+    "address": "Example address publisher",
+    "created_at": "Created time"
+    }
+    ```
 
-#### `GET /orders`
+#### `GET /publishers/{id}`
 
-* **Usage**: View order history
+* **Usage**: Get information about an publisher
 * **Method**: GET
 * **Response status**: `200 OK`
+* **Response body**:
+    ```json
+    {
+    "id": 1,
+    "name": "Example publisher name",
+    "address": "Example address publisher",
+    "created_at": "Created time"
+    }
+    ```
+#### `PUT /publishers/{id}`
 
-#### `GET /orders/{id}`
-
-* **Usage**: View order details
-* **Method**: GET
+* **Usage**: Update publisher information
+* **Method**: PUT
+* **Request body**:
+    ```json
+    {
+    "name": "Update example publisher name",
+    "address": "Update example address publisher"
+    }
+    ```
 * **Response status**: `200 OK`
+* **Response body**:
+    ```json
+    {
+    "id": 1,
+    "name": "Update example publisher name",
+    "address": "Update example address publisher",
+    "created_at": "Created time"
+    }
+    ```
+
+#### `DELETE /publishers/{id}`
+
+* **Usage**: Delete a publisher
+* **Method**: DELETE
+* **Response status**: `204 No Content`
 
 ---
 
-### ℹ️ Info
 
-#### `GET /info/about`
 
-* **Usage**: “About Us” page
-* **Method**: GET
-* **Response status**: `200 OK`
-
----
-
-## Database Schema
-
-![1.png](1.png)
