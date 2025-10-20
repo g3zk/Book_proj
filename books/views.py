@@ -4,8 +4,11 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from .models import Book, Author, Publisher
 from .serializers import BookSerializer, AuthorSerializer, PublisherSerializer
+from rest_framework import permissions
+from .permissions import IsOwnerOrReadOnly
 
 class BookList(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         books = Book.objects.all()
         serializer = BookSerializer(books, many=True)
@@ -14,11 +17,12 @@ class BookList(APIView):
     def post(self, request, format=None):
         serializer = BookSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(owner=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BookDetail(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     def get(self, request, pk, format=None):
         book = get_object_or_404(Book, pk=pk)
         serializer = BookSerializer(book)
@@ -28,7 +32,7 @@ class BookDetail(APIView):
         book = get_object_or_404(Book, pk=pk)
         serializer = BookSerializer(book, data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(owner=self.request.user)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

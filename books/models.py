@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Author(models.Model):
     name = models.CharField(max_length=100)
     biography = models.TextField(blank=True)
@@ -23,6 +22,7 @@ class Book(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='Author_books')
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE, related_name='Publisher_books')
+    owner = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='books')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
