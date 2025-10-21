@@ -70,14 +70,14 @@
 
 ### Books
 
-#### `GET /books`
+#### `GET api/books`
 
 * **Usage**: Get a list of books
 * **Method**: GET
 * **Response status**: `200 OK`
 * **Response body**: `List of books`
 
-#### `POST /books` (owner)
+#### `POST api/books` (owner)
 
 * **Usage**: Add a new book
 * **Method**: POST
@@ -106,7 +106,7 @@
     }
     ```
 
-#### `GET /books/{id}`
+#### `GET api/books/{id}`
 
 * **Usage**: Get detailed information about a book
 * **Method**: GET
@@ -125,7 +125,7 @@
     }
     ```
 
-#### `PUT /books/{id}` (owner)
+#### `PUT api/books/{id}` (owner)
 
 * **Usage**: Update book information
 * **Method**: PUT
@@ -154,7 +154,7 @@
     }
     ```
 
-#### `DELETE /books/{id}` (owner)
+#### `DELETE api/books/{id}` (owner)
 
 * **Usage**: Delete a book
 * **Method**: DELETE
@@ -164,14 +164,14 @@
 
 ### Authors
 
-#### `GET /authors`
+#### `GET api/authors`
 
 * **Usage**: Get a list of authors
 * **Method**: GET
 * **Response status**: `200 OK`
 * **Response body**: `List of authors`
 
-#### `POST /authors` 
+#### `POST api/authors` 
 
 * **Usage**: Add a new author
 * **Method**: POST
@@ -194,7 +194,7 @@
     }
     ```
 
-#### `GET /authors/{id}`
+#### `GET api/authors/{id}`
 
 * **Usage**: Get information about an author
 * **Method**: GET
@@ -208,7 +208,7 @@
     "created_at": "Created time"
     }
     ```
-#### `PUT /authors/{id}`
+#### `PUT api/authors/{id}`
 
 * **Usage**: Update author information
 * **Method**: PUT
@@ -230,7 +230,7 @@
     }
     ```
 
-#### `DELETE /authors/{id}`
+#### `DELETE api/authors/{id}`
 
 * **Usage**: Delete a author
 * **Method**: DELETE
@@ -240,14 +240,14 @@
 
 ### Publishers
 
-#### `GET /publishers`
+#### `GET api/publishers`
 
 * **Usage**: Get a list of authors
 * **Method**: GET
 * **Response status**: `200 OK`
 * **Response body**: `List of publishers`
 
-#### `POST /publishers` 
+#### `POST api/publishers` 
 
 * **Usage**: Add a new publisher
 * **Method**: POST
@@ -270,7 +270,7 @@
     }
     ```
 
-#### `GET /publishers/{id}`
+#### `GET api/publishers/{id}`
 
 * **Usage**: Get information about an publisher
 * **Method**: GET
@@ -284,7 +284,7 @@
     "created_at": "Created time"
     }
     ```
-#### `PUT /publishers/{id}`
+#### `PUT api/publishers/{id}`
 
 * **Usage**: Update publisher information
 * **Method**: PUT
@@ -306,7 +306,7 @@
     }
     ```
 
-#### `DELETE /publishers/{id}`
+#### `DELETE api/publishers/{id}`
 
 * **Usage**: Delete a publisher
 * **Method**: DELETE
