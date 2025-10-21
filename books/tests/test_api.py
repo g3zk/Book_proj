@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 @pytest.mark.django_db
 def test_get_book_list(api_client, user, author, publisher):
-    Book.objects.create(title='Test book', price=10.00, author=author, publisher=publisher, owner=user)
+    Book.objects.create(title='Test book', description='Test description', price=10.00, author=author, publisher=publisher, owner=user)
     response = api_client.get('/api/books/', format='json')
     assert response.status_code == 200
     assert len(response.data) == 1
@@ -14,7 +14,7 @@ def test_get_book_list(api_client, user, author, publisher):
 
 @pytest.mark.django_db
 def test_get_book_by_id(api_client, user, author, publisher):
-    book = Book.objects.create(title='Test book', price=10.00, author=author, publisher=publisher, owner=user)
+    book = Book.objects.create(title='Test book', description='Test description', price=10.00, author=author, publisher=publisher, owner=user)
     response = api_client.get(f'/api/books/{book.id}/', format='json')
     assert response.status_code == 200
     assert response.data['title'] == 'Test book'
@@ -33,8 +33,8 @@ def test_create_book_no_auth(api_client, author, publisher):
     response = api_client.post(
         '/api/books/',
         {
-            'title': 'Test title',
-            'price': 15.00,
+            'title': 'Test book',
+            'price': 10.00,
             'author': author.id,
             'publisher': publisher.id,
         },
@@ -58,9 +58,9 @@ def test_create_book_with_token(api_client, user, author, publisher):
     response = api_client.post(
         '/api/books/',
         {
-            'title': 'Test title',
+            'title': 'Test book',
             'description': 'Test description',
-            'price': 15.00,
+            'price': 10.00,
             'author': author.id,
             'publisher': publisher.id
         },
@@ -68,7 +68,7 @@ def test_create_book_with_token(api_client, user, author, publisher):
     )
     assert response.status_code == 201
     assert response.data['owner'] == 'testuser'
-    assert response.data['title'] == 'Test title'
+    assert response.data['title'] == 'Test book'
 
 
 @pytest.mark.django_db
@@ -86,9 +86,9 @@ def test_create_book_with_invalid_token(api_client, user, author, publisher):
     response = api_client.post(
         '/api/books/',
         {
-            'title': 'Test title',
+            'title': 'Test book',
             'description': 'Test description',
-            'price': 15.00,
+            'price': 10.00,
             'author': author.id,
             'publisher': publisher.id
         },
@@ -113,7 +113,8 @@ def test_create_book_with_incorrect_fields(api_client, user, author, publisher):
     response = api_client.post(
         '/api/books/',
         {
-            'title': 'Test title',
+            'title': 'Test book',
+            'description': 'Test description',
             'price': 'number',
             'author': author.id,
             'publisher': publisher.id
@@ -125,12 +126,12 @@ def test_create_book_with_incorrect_fields(api_client, user, author, publisher):
 
 @pytest.mark.django_db
 def test_create_book_no_auth(api_client, user, author, publisher):
-    book = Book.objects.create(title='Old title', price=10.00, author=author, publisher=publisher, owner=user)
+    book = Book.objects.create(title='Old title', description='Test description', price=10.00, author=author, publisher=publisher, owner=user)
     response = api_client.put(
         '/api/books/',
         {
-            'title': 'Test title',
-            'price': 15.00,
+            'title': 'Test book',
+            'price': 10.00,
             'author': author.id,
             'publisher': publisher.id,
         },
@@ -141,7 +142,7 @@ def test_create_book_no_auth(api_client, user, author, publisher):
 
 @pytest.mark.django_db
 def test_update_book_by_owner(api_client, user, author, publisher):
-    book = Book.objects.create(title='Old title', price=10.00, author=author, publisher=publisher, owner=user)
+    book = Book.objects.create(title='Old title', description='Test description', price=10.00, author=author, publisher=publisher, owner=user)
     login_url = reverse('token_obtain_pair')
     tokens = api_client.post(
         login_url,
@@ -168,7 +169,7 @@ def test_update_book_by_owner(api_client, user, author, publisher):
 
 @pytest.mark.django_db
 def test_update_book_by_not_owner(api_client, user, user2, author, publisher):
-    book = Book.objects.create(title='Old title', price=10.00, author=author, publisher=publisher, owner=user2)
+    book = Book.objects.create(title='Old title', description='Test description', price=10.00, author=author, publisher=publisher, owner=user2)
 
     login_url = reverse('token_obtain_pair')
     tokens = api_client.post(
@@ -184,7 +185,7 @@ def test_update_book_by_not_owner(api_client, user, user2, author, publisher):
         f'/api/books/{book.id}/',
         {
             'title': 'New title',
-            'description': 'test description',
+            'description': 'Test description',
             'price': 15.00,
             'author': author.id,
             'publisher': publisher.id
@@ -196,7 +197,7 @@ def test_update_book_by_not_owner(api_client, user, user2, author, publisher):
 
 @pytest.mark.django_db
 def test_update_book_with_incorrect_fields(api_client, user, author, publisher):
-    book = Book.objects.create(title='Old title', price=10.00, author=author, publisher=publisher, owner=user)
+    book = Book.objects.create(title='Old title', description='Test description', price=10.00, author=author, publisher=publisher, owner=user)
     login_url = reverse('token_obtain_pair')
     tokens = api_client.post(
         login_url,
@@ -211,6 +212,7 @@ def test_update_book_with_incorrect_fields(api_client, user, author, publisher):
         f'/api/books/{book.id}/',
         {
             'title': 'New title',
+            'description': 'Test description',
             'price': 'number',
             'author': author.id,
             'publisher': publisher.id
@@ -222,14 +224,14 @@ def test_update_book_with_incorrect_fields(api_client, user, author, publisher):
 
 @pytest.mark.django_db
 def test_delete_book_no_auth(api_client, user, author, publisher):
-    book = Book.objects.create(title='Test book', price=10.00, author=author, publisher=publisher, owner=user)
+    book = Book.objects.create(title='Test book', description='Test description', price=10.00, author=author, publisher=publisher, owner=user)
     response = api_client.delete(f'/api/books/{book.id}/')
     assert response.status_code == 401
 
 
 @pytest.mark.django_db
 def test_delete_book_by_owner(api_client, user, author, publisher):
-    book = Book.objects.create(title='Test book', price=10.00, author=author, publisher=publisher, owner=user)
+    book = Book.objects.create(title='Test book', description='Test description', price=10.00, author=author, publisher=publisher, owner=user)
 
     login_url = reverse('token_obtain_pair')
     tokens = api_client.post(
@@ -247,7 +249,7 @@ def test_delete_book_by_owner(api_client, user, author, publisher):
 
 @pytest.mark.django_db
 def test_delete_book_by_not_owner(api_client, user, user2, author, publisher):
-    book = Book.objects.create(title='Test book', price=10.00, author=author, publisher=publisher, owner=user2)
+    book = Book.objects.create(title='Test book', description='Test description', price=10.00, author=author, publisher=publisher, owner=user2)
 
     login_url = reverse('token_obtain_pair')
     tokens = api_client.post(
