@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 @pytest.mark.django_db
 def test_get_book_list(api_client, user, author, publisher):
-    Book.objects.create(title='Test book', price=10.00, author=author, publisher=publisher, owner=user,)
+    Book.objects.create(title='Test book', price=10.00, author=author, publisher=publisher, owner=user)
     response = api_client.get('/api/books/', format='json')
     assert response.status_code == 200
     assert len(response.data) == 1
@@ -14,7 +14,7 @@ def test_get_book_list(api_client, user, author, publisher):
 
 @pytest.mark.django_db
 def test_get_book_by_id(api_client, user, author, publisher):
-    book = Book.objects.create(title='Test book', price=10.00, author=author, publisher=publisher, owner=user,)
+    book = Book.objects.create(title='Test book', price=10.00, author=author, publisher=publisher, owner=user)
     response = api_client.get(f'/api/books/{book.id}/', format='json')
     assert response.status_code == 200
     assert response.data['title'] == 'Test book'
