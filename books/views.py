@@ -30,6 +30,7 @@ class BookDetail(APIView):
 
     def put(self, request, pk, format=None):
         book = get_object_or_404(Book, pk=pk)
+        self.check_object_permissions(request, book)
         serializer = BookSerializer(book, data=request.data)
         if serializer.is_valid():
             serializer.save(owner=self.request.user)
@@ -38,6 +39,7 @@ class BookDetail(APIView):
 
     def delete(self, request, pk, format=None):
         book = get_object_or_404(Book, pk=pk)
+        self.check_object_permissions(request, book)
         book.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
