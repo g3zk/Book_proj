@@ -72,7 +72,7 @@ class AuthorDetail(APIView):
         author = get_object_or_404(Author, pk=pk)
         if author.Author_books.exists():
             return Response(
-                {"error": "Cannot delete author because there are books associated with him."},
+                {"error": "Cannot delete an author because he has books"},
                 status=status.HTTP_400_BAD_REQUEST
             )
         author.delete()
@@ -109,7 +109,7 @@ class PublisherDetail(APIView):
         publisher = get_object_or_404(Publisher, pk=pk)
         if publisher.Publisher_books.exists():
             return Response(
-                {"error": "Cannot delete publisher because there are books associated with it."},
+                {"error": "Cannot delete an publisher because he has books"},
                 status=status.HTTP_400_BAD_REQUEST
             )
         publisher.delete()
